@@ -1,1 +1,1 @@
-# Multi_Agent_Judge_Bias
+# Judging with Many Minds: Do More Perspectives Mean Less Prejudice?
