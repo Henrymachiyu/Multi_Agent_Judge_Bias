@@ -1,0 +1,48 @@
+from transformers import Qwen2Config
+from pine import Qwen2ForCausalLMWithPS, Qwen2TokenizerWithPS
+from .base_model import base_model
+import torch
+
+# code adopted from Eliminating Position Bias of Language Models: A Mechanistic Approach by Wang et al.
+class pine_model(base_model):
+    def __init__(self, model_name: str, temperature: float = 0.7, max_tokens: int = 1024):
+        super().__init__(model_name, temperature, max_tokens)
+        config = Qwen2Config.from_pretrained(model_name)
+        config._attn_implementation = 'eager'
+        self.tokenizer = Qwen2TokenizerWithPS.from_pretrained(model_name)
+        self.model = Qwen2ForCausalLMWithPS.from_pretrained(model_name,config=config, torch_dtype=torch.float16, device_map='auto')
+        self.model.generation_config.do_sample = False # Greedy Decoding
+        self.model.generation_config.max_new_tokens = 1024
+        self.answer_split_tag = '<|im_end|>\n<|im_start|>assistant'
+        self.model.eval()  # Set the model to evaluation mode
+
+    def generate_by_prompt(self, prompt: str) -> str:
+        if self.tokenizer.pad_token is None:
+            self.tokenizer.pad_token = self.tokenizer.eos_token 
+        assert len(prompt) == 3 # input prompt should follow format: [XX, [XX, XX, ...], XX]
+        inputs = self.tokenizer(prompt)
+        inputs = {k: torch.tensor(v).to(self.model.device) for k, v in inputs.items()}
+        output = self.model.generate(**inputs, temperature=self.temperature, max_new_tokens=self.max_tokens)
+        generated_text = self.tokenizer.batch_decode(output)[0].split(self.answer_split_tag)[-1]
+        return generated_text.strip()
+    
+    def generate_by_prompt_batch(self, prompts: list[str]) -> list[str]:
+        texts = []
+        for prompt in prompts:
+            text = self.generate_by_prompt(prompt)
+            texts.append(text)
+        return texts
+
+    def generate_by_template(self, prompt_template: list[dict]) -> str:
+        pass
+
+    def generate_by_template_batch(self, prompt: list[list[str]]) -> list[str]:
+        pass
+
+# Example usage
+if __name__ == "__main__":
+
+    model = pine_model("Qwen/Qwen1.5-7B-Chat", device='7')
+    prompt = ["<|im_start|>system\nYou are now Critic, a referee whose primary role is to rigorously critique other evaluations. You must identify any weaknesses, biases, or gaps in their reasoning and provide clear, alternative perspectives where needed. Your focus is on ensuring that every evaluation is well-founded and that no critical aspect is overlooked.\n\n[Previous Referees’ Evaluations]\nBelow are the evaluations and scores provided by other referees. Review each evaluation critically. Explicitly identify any strengths, weaknesses, biases, or omissions in their reasoning. For each, provide at least two critical points: one that addresses the quality of their reasoning, and one that discusses the appropriateness of their scores.\n\nBoth assistants provided engaging short stories that began with the same opening line, but they took different approaches to the narrative.\n\n**Assistant 1** crafted a story involving a group of teenagers who discover treasure in the attic of the abandoned house. The plot is straightforward and follows a classic adventure trope. However, it lacks depth in character development and emotional engagement. The ending hints at a significant change in the teenagers' lives but does not elaborate on the consequences of their discovery, leaving the reader wanting more.\n\n**Assistant 2**, on the other hand, focused on a young boy named Sam who discovers a magical book in the basement of the house. This story introduces a sense of wonder and mystery, as well as a character arc where Sam evolves into a famous magician. The narrative is more imaginative and offers a satisfying conclusion that ties back to the secret of the house. It also explores the theme of curiosity and the consequences of discovery more effectively.\n\nIn terms of helpfulness, relevance, and level of detail, Assistant 2 provided a richer and more captivating story, while Assistant 1's story felt more generic and less engaging.\n\nOverall, I would rate the assistants as follows:\n\nThe score of Assistant 1: 6  \nThe score of Assistant 2: 9\n\n\nYou are a critical reviewer analyzing the previous referee evaluations. Your role is not to simply restate what was said, but to rigorously challenge, refine, and if necessary, dispute the evaluations. Please follow these steps:\n1. For each previous evaluation, identify specific strengths and, more importantly, pinpoint gaps, errors, or biases.\n2. Critically assess the reasoning behind each score and suggest improvements or alternatives.\n3. Provide your final evaluation and revised scores, explaining your reasoning succinctly.\n\nUse the format below:\nEvaluation evidence: <your reasoning here>\nThe score of Assistant 1: <score>\nThe score of Assistant 2: <score><|im_end|>", ['<|im_start|>user\n[Question]\nCould you write a captivating short story beginning with the sentence: The old abandoned house at the end of the street held a secret that no one had ever discovered.\n', "[The Start of Assistant 1’s Answer]\nThe old abandoned house at the end of the street held a secret that no one had ever discovered. It was a house that had stood empty for years, its windows boarded up and its front door hanging off its hinges. Some say that the previous owner had disappeared without a trace, leaving behind only the shell of a house. Others say that the house was cursed, and that anyone who entered it would never return. Despite these rumors, a group of teenagers decided to explore the house one night, armed with flashlights and a sense of adventure. As they crept through the dark and dusty rooms, they couldn't help but feel a sense of unease. But it was too late to turn back now, and they continued on, deeper and deeper into the house. Finally, they reached the attic, where they found a dusty old box. As they opened it, they were shocked to discover that it was filled with gold coins and jewels. It was clear that the house had been the hiding place of a notorious thief, who had never been caught. The teenagers quickly gathered as much treasure as they could carry and made their way out of the house, vowing never to speak of their discovery again. But little did they know, their lives would never be the same.\n[The End of Assistant 1’s Answer]", "[The Start of Assistant 2’s Answer]\nSure! Here's a short story that begins with that sentence:\n\nThe old abandoned house at the end of the street held a secret that no one had ever discovered. The rumors around town were that the house was haunted, but that didn't stop 12-year-old Sam from being curious about it.\n\nOne day, Sam decided to investigate the house for himself. He carefully made his way through the overgrown weeds and broken glass in the front yard. The door creaked as he pushed it open and stepped inside.\n\nThe inside of the house was dark and dusty. Cobwebs hung from the ceiling, and the smell of mold filled the air. Sam walked slowly through the rooms, looking for any clues that might reveal the secret.\n\nIn the attic, he found an old trunk that was locked. Sam had brought a small screwdriver with him, and he used it to open the trunk. Inside, he found a stack of old books and some photos of a family that he recognized from the town's history.\n\nSam continued to search the house, but he didn't find anything else of interest. As he was about to leave, he heard a noise coming from the basement. He walked down the stairs and saw a door that was slightly ajar.\n\nSam pushed open the door and saw a room that was filled with books and candles. In the center of the room was a large book that was lying open on a table. Sam picked it up and started to read.\n\nThe book was written in a language that Sam had never seen before. He turned the pages, wondering what the book could be about. As he turned the last page, the book began to glow.\n\nSam was startled, but he was also intrigued. He closed the book and put it back on the table. As he did, the room began to shake, and the books on the shelves started to fall.\n\nSam ran out of the room and up the stairs. The house was collapsing around him, but he managed to make it outside just in time. As he watched the house fall apart, he realized that he had discovered the secret that the old abandoned house had been hiding.\n\nThe secret was a magical book that had been hidden in the basement for years. Sam took the book with him and told no one about his discovery. From that day on, he spent his time learning the language of the book and discovering its secrets.\n\nIn the end, Sam became a famous magician, thanks to the knowledge he had gained from the book. The old abandoned house at the end of the street may have been gone, but its secret would live on forever.\n\nSo there you go! I hope you enjoyed the story\n[The End of Assistant 2’s Answer]"], '[System]\nWe would like to request your feedback on the performance of two AI assistants in response to the user question above.\nPlease consider the helpfulness, relevance, accuracy, and level of detail of their responses.\nThere are a few other referees assigned to the same task. It’s your responsibility to critically assess their input and deliver your own well-reasoned judgment.\nEach assistant receives an overall score on a scale of 1 to 10, where a higher score indicates better overall performance.\n\n<|im_end|>\n<|im_start|>assistant\nNow it’s your time to talk, please make your talk short and clear, Critic!']
+    response = model.generate_by_prompt(prompt)
+    print("Response to prompt:", response)
