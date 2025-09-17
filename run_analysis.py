@@ -2,30 +2,37 @@ import json
 import re
 import os
 
-dir_path='results/result_debate_calm' 
+dir_path='results/result_meta_mtbench' 
 
-result_dir_root="analysis/analysis_debate_calm"
-               
-model_names = [
-               'deepseek-chat',
-               'DeepSeek-R1-Distill-Qwen-32B',
-               'gpt-4o-mini',
-               'Llama-3.3-70B-Instruct-Turbo',
-               'Llama-3.3-70B-Instruct-Turbo_gpt-4o-mini',
-               'gpt-4o-mini_Llama-3.3-70B-Instruct-Turbo',
-               'DeepSeek-R1-Distill-Qwen-32B_gpt-4o-mini',
-               'DeepSeek-R1-Distill-Qwen-32B_Llama-3.3-70B-Instruct-Turbo',
-               'DeepSeek-R1-Distill-Qwen-32B_deepseek-chat',
-            #    'gpt-4o-mini_pine',
-            #    'Llama-3.3-70B-Instruct-Turbo_pine',
-]
+output_dir="analysis/analysis_meta_mtbench"
 
 bias_types  = ['position', 'cot', 'verbose', 'bandwagon']
-# bias_types  = ['position']
+
+os.makedirs(output_dir, exist_ok=True)
+
+def extract_model_names(dir_path, bias_types):
+    files = os.listdir(dir_path)
+    model_names = set()
+    for fname in files:
+        # Only consider files ending with .json and containing _round
+        if not fname.endswith('.json') or '_round' not in fname:
+            continue
+        for bias in bias_types + ['none']:
+            pattern = f"-{bias}_round"
+            if pattern in fname:
+                # Remove the pattern and everything after to get model name
+                idx = fname.find(pattern)
+                model_name = fname[:idx]
+                model_names.add(model_name)
+                break
+    return sorted(model_names)
+
+model_names = extract_model_names(dir_path, bias_types)
 
 for model_name in model_names:
     for bias_type in bias_types:
-        result_dir = result_dir_root + f"/{model_name}-{bias_type}.json"
+        print(f"Processing model: {model_name} with bias: {bias_type}")
+        result_dir = output_dir + f"/{model_name}-{bias_type}.json"
         state = ['none', bias_type]
         # Regex to extract scores (supports float and flexible phrasing)
         score_pattern_1 = re.compile(
@@ -63,12 +70,21 @@ for model_name in model_names:
         files = get_existing_model_state_files(model_name, state, dir_path)
         file_pattern = re.compile(r"(.+)_round(\d+)\.json$")
         print("Files:")
+        # Check if all states are contained in the files
+        found_states = set()
         for file in files:
             match = file_pattern.match(file)
             if match:
+                model_state = match.groups()[0].split("-")[-1]
+                found_states.add(model_state)
                 print(f"Model: {match.groups()[0]}, Round: {match.groups()[1]}")
             else:
                 print(f"File name format is incorrect: {file}")
+                continue
+        missing_states = set(state) - found_states
+        if missing_states:
+            print(f"Warning: Missing states in files for model '{model_name}': {missing_states}")
+            continue
 
         cur_analysis = {}
         cur_analysis_2 = {}
