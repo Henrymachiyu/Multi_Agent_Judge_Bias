@@ -1,11 +1,11 @@
 <p align="center">
-  <p align="center">
-    <strong style="font-size:3em;">
+  <strong>
+    <span style="font-size:2em;">
       Judging with Many Minds:<br>
       Do More Perspectives Mean Less Prejudice?<br>
       On Bias Amplification and Resistance in Multi-Agent Based LLM-as-Judge
-    </strong>
-  </p>
+    </span>
+  </strong>
 </p>
 
 <p align="center">
