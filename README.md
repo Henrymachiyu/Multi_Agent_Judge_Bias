@@ -158,7 +158,7 @@ You can also adjust the `--judgements_models` parameter to specify a list of mod
 
 ## Analysis
 
-After running experiments, use the scripts in the `analysis/` folder to analyze results. Example:
+After running experiments, use the scripts in `run_analysis.py` to analyze results. Example:
 
 ```bash
 python run_analysis.py --result_dir results/result_debate_mtbench --output_dir analysis/analysis_debate_mtbench
