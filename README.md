@@ -104,7 +104,7 @@ python run_exp.py \
 
 ### 2. Meta-Judge Experiments
 
-To run Meta-Judge Experiments, first complete the Debate experiments to generate the round 0 response files. The Meta-Judge scripts require these outputs as input for further evaluation. Ensure that the results from the Debate experiments (e.g., files in `results/result_debate_mtbench/gpt-4o-mini-none_round0.json`) are available before proceeding with Meta-Judge runs. The meta-judge will take these saved round 0 response as the candidates' initial output.
+To run Meta-Judge Experiments, first complete the Debate experiments to generate the round 0 response files. The Meta-Judge scripts require these outputs as input for further evaluation. Ensure that the results from the Debate experiments (e.g. `results/result_debate_mtbench/gpt-4o-mini-none_round0.json` if candidates include `gpt-4o-mini`) are available before proceeding with Meta-Judge runs. The meta-judge will take these saved round 0 response as the candidates' initial output.
 
 Original meta judge (conclude mode):
 
