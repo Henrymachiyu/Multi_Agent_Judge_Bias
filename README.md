@@ -9,7 +9,9 @@ arXiv: [2505.19477](https://arxiv.org/abs/2505.19477)
 
 ## Overview
 
-<img src="assets/fig1_multiagent5.jpg" alt="Figure 1: Evaluated Multi-Agent Framework" width="70%">
+<p align="center">
+  <img src="assets/fig1_multiagent5.jpg" alt="Figure 1: Evaluated Multi-Agent Framework" width="50%">
+</p>
 
 This repo provides code to reproduce the experiments and analyses from our paper, which investigates the bias of large language model (LLM) judges in multi-agent debate and meta-judge settings (see Figure 1). In addition to experiment code, this repository provides the final output and conversation logs of the agents, which can be used for further analysis and future research.
 
