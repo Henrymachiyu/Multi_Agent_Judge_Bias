@@ -161,7 +161,7 @@ You can also adjust the `--judgements_models` parameter to specify a list of mod
 After running experiments, use the scripts in the `analysis/` folder to analyze results. Example:
 
 ```bash
-python run_analysis.py --result_dir results/result_debate_mtbench/gpt-4o-mini-none
+python run_analysis.py --result_dir results/result_debate_mtbench --output_dir analysis/analysis_debate_mtbench
 ```
 
 You can modify the arguments to analyze different result folders or bias types.

@@ -1,10 +1,15 @@
 import json
 import re
 import os
+import argparse
 
-dir_path='results/result_meta_mtbench' 
+parser = argparse.ArgumentParser()
+parser.add_argument('--result_dir', type=str, default='results/result_debate_mtbench', help='Input directory path')
+parser.add_argument('--output_dir', type=str, default='analysis/analysis_debate_mtbench', help='Output directory path')
+args = parser.parse_args()
 
-output_dir="analysis/analysis_meta_mtbench"
+dir_path = args.result_dir
+output_dir = args.output_dir
 
 bias_types  = ['position', 'cot', 'verbose', 'bandwagon']
 
