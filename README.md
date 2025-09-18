@@ -36,7 +36,7 @@ We recommend using `conda` to manage dependencies. All required packages are lis
 
 ```bash
 conda env create -f environment.yaml
-conda activate multi_agent_judge_bias
+conda activate multiagentbias
 ```
 
 ## Running Experiments
