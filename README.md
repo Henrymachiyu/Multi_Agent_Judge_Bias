@@ -17,7 +17,7 @@
 
 This repo provides code to reproduce the experiments and analyses from our paper, which investigates the bias of large language model (LLM) judges in multi-agent debate and meta-judge settings (see Figure 1). In addition to experiment code, this repository provides the final output and conversation logs of the agents in the experiments, which can be used for further analysis and future research.
 
-## Bias Types Tested
+## Tested Bias Types
 
 We evaluate four main types of bias in LLM judges (see Figure 2):
 
