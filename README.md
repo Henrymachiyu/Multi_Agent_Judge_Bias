@@ -69,7 +69,7 @@ python run_exp.py \
   --n_round 0 \
   --batch_size 4 \
   --debug True \
-  --bias_type none \
+  --bias_type none
 ```
 
 Debate with position bias:
@@ -84,7 +84,7 @@ python run_exp.py \
   --n_round 0 \
   --batch_size 4 \
   --debug True \
-  --bias_type position \
+  --bias_type position
 ```
 
 Debate with verbosity bias:
@@ -99,7 +99,7 @@ python run_exp.py \
   --n_round 0 \
   --batch_size 4 \
   --debug True \
-  --bias_type verbose \
+  --bias_type verbose
 ```
 
 ### 2. Meta-Judge Experiments
@@ -119,7 +119,7 @@ python run_exp_meta.py \
   --batch_size 4 \
   --debug True \
   --judge_type conclude \
-  --bias_type none \
+  --bias_type none
 ```
 
 Meta judge (choose mode) with position bias:
@@ -135,7 +135,7 @@ python run_exp_meta.py \
   --batch_size 4 \
   --debug True \
   --judge_type choose \
-  --bias_type position \
+  --bias_type position
 ```
 
 Meta judge (conclude mode) with verbosity bias:
@@ -151,7 +151,7 @@ python run_exp_meta.py \
   --batch_size 4 \
   --debug True \
   --judge_type conclude \
-  --bias_type verbose \
+  --bias_type verbose
 ```
 
 You can also adjust the `--judgements_models` parameter to specify a list of models whose round 0 outputs will be used for meta-judging. Provide a comma-separated list of model names that correspond to the saved outputs in the results directory. This allows you to flexibly evaluate the impact of different candidate models and their combinations in the meta-judge setting.
