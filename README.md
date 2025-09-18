@@ -87,7 +87,7 @@ python run_exp.py \
   --bias_type position
 ```
 
-Debate with verbosity bias:
+Debate with verbosity bias (make sure to use the generated verbose dataset):
 
 ```bash
 python run_exp.py \
