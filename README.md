@@ -55,7 +55,7 @@ The main parameters for running debate experiments are:
 - `--debug`: Enables debug mode for verbose logging.
 - `--bias_type`: Type of bias to simulate (`none`, `position`, `cot`, `bandwagon`, or `verbose`).
 
-Adjust these parameters to customize your experiment setup. Below is some example usage:
+Adjust these parameters to customize your experiment setup. Below are some examples:
 
 Run the original debate:
 
@@ -105,6 +105,21 @@ python run_exp.py \
 ### 2. Meta-Judge Experiments
 
 To run Meta-Judge Experiments, first complete the Debate experiments to generate the round 0 response files. The Meta-Judge scripts require these outputs as input for further evaluation. Ensure that the results from the Debate experiments (e.g. `results/result_debate_mtbench/gpt-4o-mini-none_round0.json` if candidates include `gpt-4o-mini`) are available before proceeding with Meta-Judge runs. The meta-judge will take these saved round 0 response as the candidates' initial output.
+
+The main parameters for running meta-judge experiments are:
+
+- `--data_dir`: Path to the dataset.
+- `--judge`: The model used as the meta-judge.
+- `--judgements_models`: Comma-separated list of candidate models whose outputs will be meta-judged.
+- `--judgements_dir`: Directory containing round 0 outputs from debate experiments.
+- `--result_save`: Output path for saving meta-judge results.
+- `--device`: GPU device index for computation.
+- `--batch_size`: Number of samples processed per batch.
+- `--debug`: Enables debug mode for verbose logging.
+- `--judge_type`: Meta-judge mode (`conclude` or `choose`).
+- `--bias_type`: Type of bias to simulate (`none`, `position`, `cot`, `bandwagon`, or `verbose`).
+
+Adjust these parameters to customize your experiment setup. Below are some examples:
 
 Original meta judge (conclude mode):
 
