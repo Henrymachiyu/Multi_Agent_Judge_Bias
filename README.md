@@ -1,11 +1,13 @@
+<p align="center">
+  <strong><span style="font-size:2em;">Judging with Many Minds:<br>
+  Do More Perspectives Mean Less Prejudice?<br>
+  On Bias Amplification and Resistance in Multi-Agent Based LLM-as-Judge</span></strong>
+</p>
 
-# Multi-Agent Judge Bias
-
-This repository contains the official code for the paper:
-
-**Judging with Many Minds: Do More Perspectives Mean Less Prejudice? On Bias Amplification and Resistance in Multi-Agent Based LLM-as-Judge**
-
-arXiv: [2505.19477](https://arxiv.org/abs/2505.19477)
+<p align="center">
+  This repository contains the official code for the paper:
+  <a href="https://arxiv.org/abs/2505.19477">arXiv</a>
+</p>
 
 ## Overview
 
