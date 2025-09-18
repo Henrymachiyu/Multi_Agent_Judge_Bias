@@ -23,7 +23,7 @@ We release the following data to support reproducibility and further research:
 
 - **Preprocessed Judge Datasets**: Curated and preprocessed datasets (`data/`) for judge modeling and evaluation, which are the pairwise comparison problems sampled from [MTBench](https://arxiv.org/abs/2306.05685) dataset and [CALM](https://arxiv.org/abs/2410.02736) dataset. We also include verbose versions of the two datasets, where one choice is expanded to introduce verbose bias.
 - **Agent Conversation Logs**: Raw logs (`logs/`) of agent interactions from all experimental runs, capturing the full history of multi-agent debates and meta-judging processes. These conversation histories can support future research, not only for examining how biases emerge and intensify, but also for uncovering other patterns and dynamics in multi-agent interactions.
-- **Final Outputs**: The `results/` directory contains the final outputs of the judge, including the roundwise scores and judgments from multi-round debates, as well as the evaluations from one-time meta-judges.
+- **Codes and Raw Results**: Source codes for reproducing our experiments and generating summary statistics. The raw results of our experiments (results/), containing round-by-round scores and judgments from multi-round debates, as well as one-time evaluations from meta-judges. These results constitute the foundation for the statistical analyses presented in our paper.
 
 ## Tested Bias Types
 
