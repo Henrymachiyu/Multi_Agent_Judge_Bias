@@ -9,7 +9,7 @@ arXiv: [2505.19477](https://arxiv.org/abs/2505.19477)
 
 ## Overview
 
-![Figure 1: Evaluated Multi-Agent Framework](assets/fig1_multiagent5.png)
+![Figure 1: Evaluated Multi-Agent Framework](assets/fig1_multiagent5.jpg)
 
 This repo provides code to reproduce the experiments and analyses from our paper, which investigates the bias of large language model (LLM) judges in multi-agent debate and meta-judge settings (see Figure 1). In addition to experiment code, this repository provides the final output and conversation logs of the agents, which can be used for further analysis and future research.
 
@@ -24,7 +24,7 @@ We evaluate four main types of bias in LLM judges (see Figure 2):
 
 Each bias type is simulated and analyzed to assess its impact on judgment robustness in multi-agent settings.
 
-![Figure 2: Bias Types Illustration](assets/fig2_bias_final.png)
+![Figure 2: Bias Types Illustration](assets/fig2_bias_final.jpg)
 
 ## Environment Setup
 
