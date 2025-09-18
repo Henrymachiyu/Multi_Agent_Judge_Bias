@@ -12,10 +12,18 @@
 ## Overview
 
 <p align="center">
-  <img src="assets/fig1_multiagent5.jpg" alt="Figure 1: Evaluated Multi-Agent Framework" width="60%">
+  <img src=".assets/fig1_multiagent5.jpg" alt="Figure 1: Evaluated Multi-Agent Framework" width="60%">
 </p>
 
 This repo provides code to reproduce the experiments and analyses from our paper, which investigates the bias of large language model (LLM) judges in multi-agent debate and meta-judge settings (see Figure 1). In addition to experiment code, this repository provides the final output and conversation logs of the agents in the experiments, which can be used for further analysis and future research.
+
+## Released Data
+
+We release the following data to support reproducibility and further research:
+
+- **Preprocessed Judge Datasets**: Curated and preprocessed datasets (`data/`) for judge modeling and evaluation, which are the pairwise comparison problems sampled from [MTBench](https://arxiv.org/abs/2306.05685) dataset and [CALM](https://arxiv.org/abs/2410.02736) dataset. We also include verbose versions of the two datasets, where one choice is expanded to introduce verbose bias.
+- **Agent Conversation Logs**: Raw logs (`logs/`) of agent interactions from all experimental runs, capturing the full history of multi-agent debates and meta-judging processes. These conversation histories can support future research, not only for examining how biases emerge and intensify, but also for uncovering other patterns and dynamics in multi-agent interactions.
+- **Final Outputs**: The `results/` directory contains the final outputs of the judge, including the roundwise scores and judgments from multi-round debates, as well as the evaluations from one-time meta-judges.
 
 ## Tested Bias Types
 
@@ -28,7 +36,7 @@ We evaluate four main types of bias in LLM judges (see Figure 2):
 
 Each bias type is simulated and analyzed to assess its impact on judgment robustness in multi-agent settings.
 
-![Figure 2: Bias Types Illustration](assets/fig2_bias_final.jpg)
+![Figure 2: Bias Types Illustration](.assets/fig2_bias_final.jpg)
 
 ## Environment Setup
 
@@ -171,7 +179,7 @@ python run_exp_meta.py \
 
 You can also adjust the `--judgements_models` parameter to specify a list of models whose round 0 outputs will be used for meta-judging. Provide a comma-separated list of model names that correspond to the saved outputs in the results directory. This allows you to flexibly evaluate the impact of different candidate models and their combinations in the meta-judge setting.
 
-## Analysis
+### 3. Checking Results
 
 After running experiments, use the scripts in `run_analysis.py` to analyze results. Example:
 
@@ -179,11 +187,11 @@ After running experiments, use the scripts in `run_analysis.py` to analyze resul
 python run_analysis.py --result_dir results/result_debate_mtbench --output_dir analysis/analysis_debate_mtbench
 ```
 
-You can modify the arguments to analyze different result folders or bias types.
+You can modify the arguments to analyze different result folders or your own generated conversations.
 
-## Checking Results
+We provide all intermediate data from our experiments. Results are stored in the `results/` directory, organized by experiment type and bias. You can either inspect the JSON files directly or use the analysis scripts to generate summary statistics and plots. The statistics reported in our paper are also available in the `analysis/` folder, generated from the current results using `run_analysis.py`.
 
-Results are saved in the `results/` directory, organized by experiment type and bias. You can inspect the JSON files directly or use the analysis scripts for summary statistics and plots. Detailed conversation logs are also provided in the `logs/` directory. These logs include the full agent interactions for each experiment, allowing for in-depth inspection and further analysis of model behavior and decision processes.
+In addition, detailed conversation logs are available in the `logs/` directory. These logs contain the full agent interactions for each experiment, making it possible to closely examine model behavior and decision-making processes.
 
 
 ## Citation
